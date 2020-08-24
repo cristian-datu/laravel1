@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register') }}" id="registration-form">
                         @csrf
 
                         <div class="form-group row">
@@ -72,6 +72,17 @@
                                 </span>
                                 @enderror
                             </div>
+                            <div class="col-12">
+                                <div>
+                                    Password must be
+                                    <span id="has-8-chars" class="text-danger">8 characters long</span>
+                                    and have at least
+                                    <span id="has-uppercase" class="text-danger">1 uppercase letter</span>,
+                                    <span id="has-lowercase" class="text-danger">1 lowercase letter</span>,
+                                    <span id="has-numeric" class="text-danger">1 number</span>,
+                                    <span id="has-symbol" class="text-danger">1 symbol</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group row">
@@ -119,4 +130,53 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    (function() {
+        window.addEventListener('load', function () {
+            (function ($) {
+                "use strict";
+
+                if (!$) {
+                    throw new Error("jQuery not loaded");
+                }
+
+                const form = $("#registration-form");
+                const input = $("#password");
+                const has8chars = $("#has-8-chars");
+                const hasUppercase = $("#has-uppercase");
+                const hasLowercase = $("#has-lowercase");
+                const hasNumeric = $("#has-numeric");
+                const hasSymbol = $("#has-symbol");
+
+                $(input).on('keyup', function (e) {
+                    const valid = "text-success";
+                    const invalid = "text-danger";
+                    const value = e.target.value;
+                    const validate = function (el, pattern) {
+                        el.attr("class", (pattern.test(value) ? valid : invalid));
+                    }
+
+                    has8chars.attr("class", (value.length > 7 ? valid : invalid));
+                    validate(hasUppercase, /[A-Z]/);
+                    validate(hasLowercase, /[a-z]/);
+                    validate(hasNumeric, /\d/);
+                    validate(hasSymbol, /\W+/);
+                });
+
+                $(form).on("submit", function (e) {
+                    if (!(/^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/.test(input.val()))) {
+                        e.preventDefault();
+                        alert("Invalid password format");
+                        input.focus();
+                    }
+                });
+
+            })(window.jQuery);
+        });
+    })();
+
+</script>
 @endsection
