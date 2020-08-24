@@ -145,6 +145,7 @@
 
                 const form = $("#registration-form");
                 const input = $("#password");
+                const input2 = $("#password-confirm");
                 const has8chars = $("#has-8-chars");
                 const hasUppercase = $("#has-uppercase");
                 const hasLowercase = $("#has-lowercase");
@@ -171,6 +172,10 @@
                         e.preventDefault();
                         alert("Invalid password format");
                         input.focus();
+                    } else if (input.val() !== input2.val()) {
+                        e.preventDefault();
+                        alert("Password confirmation does not match");
+                        input2.focus();
                     }
                 });
 
