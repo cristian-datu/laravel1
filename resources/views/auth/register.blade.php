@@ -102,7 +102,8 @@
                                         class="form-check-input @error('accept_terms') is-invalid @enderror"
                                         id="accept-terms" name="accept_terms">
                                     <label class="form-check-label" for="accept-terms">* I accept the</label>
-                                    <a href="#" title="Terms and Conditions" target="_blank">Terms and Conditions</a>
+                                    <a href="{{ route('latest-terms-of-service') }}" title="Terms of Service"
+                                        target="_blank">Terms of Service</a>
                                     @error('accept_terms')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

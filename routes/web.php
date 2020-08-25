@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\TermOfService;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/terms-of-service', function () {
+    $article = TermOfService::latest('published_at')->first();
+    $htmlContent = '<h1>No published content available</h1>';
+
+    if ($article && $article->content) {
+        $htmlContent = $article->content;
+    }
+
+    return view('latest-terms-of-service', compact('htmlContent'));
+})->name('latest-terms-of-service');
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
 });
 
 Auth::routes(['verify' => true]);
