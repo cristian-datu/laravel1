@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Lockout;
 use \Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -36,6 +37,20 @@ class AuthEventSubscriber
     }
 
     /**
+     * Log lockout events to /storage/logs/laravel.log
+     *
+     * @param Lockout $event
+     *
+     * @return void
+     */
+    public function handleLockout(Lockout $event)
+    {
+        $ip = $this->request->ip() ?? 'unknown IP address';
+        $email = request('email') ?? 'unknown user';
+        Log::warning("Locking account {$email} from {$ip}");
+    }
+
+    /**
      * Register the listeners for the subscriber.
      *
      * @param  \Illuminate\Events\Dispatcher  $events
@@ -45,6 +60,11 @@ class AuthEventSubscriber
         $events->listen(
             'Illuminate\Auth\Events\Failed',
             'App\Listeners\AuthEventSubscriber@handleFailed'
+        );
+
+        $events->listen(
+            'Illuminate\Auth\Events\Lockout',
+            'App\Listeners\AuthEventSubscriber@handleLockout'
         );
     }
 }
