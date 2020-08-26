@@ -40,3 +40,8 @@ window.axios.defaults.withCredentials = true;
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+// Sanctum authentication call on boot
+axios.get("/sanctum/csrf-cookie").then(() => {
+    window.authenticated = true;
+});

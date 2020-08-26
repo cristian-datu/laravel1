@@ -4,9 +4,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+const { default: VueRouter } = require("vue-router");
 
-window.Vue = require('vue');
+require("./bootstrap");
+
+window.Vue = require("vue");
+window.VueRouter = require("vue-router");
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,7 +22,12 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component("App", require("./components/layout/App.vue").default);
+Vue.component("Users", require("./components/views/Users.vue").default);
+Vue.component(
+    "TermsOfService",
+    require("./components/views/TermsOfService.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -27,6 +35,23 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.use(VueRouter);
+
 const app = new Vue({
-    el: '#app',
+    router: new VueRouter({
+        mode: "hash",
+        routes: [
+            {
+                path: "/users",
+                name: "Users",
+                component: () => import("./components/views/Users.vue")
+            },
+            {
+                path: "/terms-of-service",
+                name: "TermsOfService",
+                component: () => import("./components/views/TermsOfService.vue")
+            }
+        ]
+    }),
+    el: "#app"
 });

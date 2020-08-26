@@ -15,9 +15,28 @@
 </template>
 
 <script>
-    export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+export default {
+    mounted() {
+        console.log("Component mounted.");
+        axios({
+            method: "get",
+            url: "/api/users",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
+
+        axios({
+            method: "get",
+            url: "/api/user/1",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
     }
+};
 </script>

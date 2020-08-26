@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\User;
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\UserCollection;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users', function (Request $request) {
+        return new UserCollection(User::paginate(5));
+    });
+
+    Route::get('/user/{id}', function (Request $request, $id) {
+        return new UserResource(User::find($id));
+    });
 });
