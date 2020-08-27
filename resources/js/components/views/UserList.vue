@@ -1,5 +1,16 @@
 <template>
     <div class="container">
+        <div class="row mb-4">
+            <div class="col-6"><strong>Users list</strong></div>
+            <div class="col-6 text-right">
+                <router-link
+                    :to="{ name: 'users.create' }"
+                    class="btn btn-primary btn-sm"
+                >
+                    Add user
+                </router-link>
+            </div>
+        </div>
         <SearchBar
             labelText="Search Users"
             buttonText="Search"

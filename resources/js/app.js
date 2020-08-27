@@ -39,7 +39,27 @@ const app = new Vue({
             {
                 path: "/users",
                 name: "UserList",
-                component: () => import("./components/views/UserList.vue")
+                component: () => import("./components/views/Users.vue"),
+                children: [
+                    {
+                        path: "/",
+                        name: "users.index",
+                        component: () =>
+                            import("./components/views/UserList.vue")
+                    },
+                    {
+                        path: "create",
+                        name: "users.create",
+                        component: () =>
+                            import("./components/views/UserCreate.vue")
+                    },
+                    {
+                        path: ":id/edit",
+                        name: "users.edit",
+                        component: () =>
+                            import("./components/views/UserCreate.vue")
+                    }
+                ]
             },
             {
                 path: "/terms-of-service",

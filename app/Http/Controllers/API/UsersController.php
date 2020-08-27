@@ -7,6 +7,7 @@ use App\User;
 use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -54,7 +55,31 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rs = [
+            'data' => null,
+            'error' => null
+        ];
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/', 'confirmed'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'accept_terms' => ['required']
+        ]);
+
+        $data['password'] = Hash::make($data['password']);
+        $data['terms_accepted_at'] = ($data['accept_terms'] ? now() : null);
+        unset($data['accept_terms']);
+
+        $User = new User($data);
+
+        if ($User->save()) {
+            $rs['data'] = new UserResource($User);
+        } else {
+            $rs['error'] = 'Error saving user';
+        }
+
+        return $rs;
     }
 
     /**

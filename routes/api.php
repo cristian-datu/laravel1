@@ -22,6 +22,9 @@ Route::namespace('API')->name('api.')->group(function () {
     // List and search
     Route::get('/users', 'UsersController@index')->name('users.index');
 
+    // Create
+    Route::post('/users', 'UsersController@store')->name('users.store');
+
     // Update
     Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
 

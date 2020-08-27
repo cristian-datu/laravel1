@@ -4,7 +4,7 @@
             <ul class="nav">
                 <li class="nav-item">
                     <router-link
-                        :to="{ name: 'UserList' }"
+                        :to="{ name: 'users.index' }"
                         active-class="active"
                         class="nav-link"
                         >Users</router-link
