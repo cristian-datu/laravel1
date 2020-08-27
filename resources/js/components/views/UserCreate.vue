@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row mb-4">
-            <div class="col-6"><strong>Add user</strong></div>
+            <div class="col-6"><strong>Add User</strong></div>
             <div class="col-6 text-right">
                 <router-link
                     :to="{ name: 'users.index' }"
@@ -316,14 +316,8 @@ export default {
                         if (error) {
                             alert("Error creating user");
                         } else {
-                            // Reset form
-                            this.name = "";
-                            this.phone = "";
-                            this.email = "";
-                            this.password = "";
-                            this.passwordConfirm = "";
-                            this.terms = "";
                             alert(`User ${data.email} created`);
+                            this.$router.push({ name: "users.index" });
                         }
                     })
                     .catch(error => {

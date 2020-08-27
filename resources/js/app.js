@@ -57,7 +57,7 @@ const app = new Vue({
                         path: ":id/edit",
                         name: "users.edit",
                         component: () =>
-                            import("./components/views/UserCreate.vue")
+                            import("./components/views/UserEdit.vue")
                     }
                 ]
             },

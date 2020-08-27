@@ -4,12 +4,12 @@
         <td>{{ user.email }}</td>
         <td>{{ user.phone }}</td>
         <td>
-            <button
-                v-on:click.prevent="$root.$emit('edit-user', user)"
+            <router-link
+                :to="{ name: 'users.edit', params: { id: user.id } }"
                 class="btn btn-sm btn-primary"
             >
                 Edit
-            </button>
+            </router-link>
             <button
                 v-on:click.prevent="$root.$emit('delete-user', user)"
                 class="btn btn-sm btn-danger"

@@ -22,6 +22,9 @@ Route::namespace('API')->name('api.')->group(function () {
     // List and search
     Route::get('/users', 'UsersController@index')->name('users.index');
 
+    // Show single user
+    Route::get('/users/{user}', 'UsersController@show')->name('users.show');
+
     // Create
     Route::post('/users', 'UsersController@store')->name('users.store');
 

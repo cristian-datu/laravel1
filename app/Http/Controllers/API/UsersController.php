@@ -38,16 +38,6 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -75,6 +65,8 @@ class UsersController extends Controller
 
         if ($User->save()) {
             $rs['data'] = new UserResource($User);
+            // Emmit registration event to send email verification
+            event(new \Illuminate\Auth\Events\Registered($User));
         } else {
             $rs['error'] = 'Error saving user';
         }
@@ -90,7 +82,10 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return [
+            'data' => new UserResource($user),
+            'error' => null
+        ];
     }
 
     /**
@@ -110,12 +105,37 @@ class UsersController extends Controller
         $unverify = $request->get('unverify', false);
 
         if ($unverify) {
+            // Email verification cancellation
             $data['unverify'] = $unverify;
             $user->email_verified_at = null;
             if ($user->save()) {
                 $data['data'] = new UserResource($user);
             } else {
                 $data['error'] = 'Error unregister user';
+            }
+        } else {
+            // Update user data
+            $data = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'password' => ['required', 'string', 'min:8', 'regex:/^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/', 'confirmed'],
+                'phone' => ['nullable', 'string', 'max:255'],
+                'accept_terms' => ['required']
+            ]);
+            if ($data['email'] !== $user->email) {
+                $data['email_verified_at'] = null;
+            } else {
+                unset($data['email']);
+            }
+            $data['password'] = Hash::make($data['password']);
+            $data['terms_accepted_at'] = ($data['accept_terms'] ? now() : null);
+            unset($data['accept_terms']);
+            if ($user->update($data)) {
+                if (!$user->email_verified_at) {
+                    // Emmit registration event to send email verification
+                    event(new \Illuminate\Auth\Events\Registered($user));
+                }
+                $data['data'] = $user;
             }
         }
 
