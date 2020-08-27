@@ -23,11 +23,6 @@ window.VueRouter = require("vue-router");
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component("App", require("./components/layout/App.vue").default);
-Vue.component("Users", require("./components/views/Users.vue").default);
-Vue.component(
-    "TermsOfService",
-    require("./components/views/TermsOfService.vue").default
-);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,8 +38,8 @@ const app = new Vue({
         routes: [
             {
                 path: "/users",
-                name: "Users",
-                component: () => import("./components/views/Users.vue")
+                name: "UserList",
+                component: () => import("./components/views/UserList.vue")
             },
             {
                 path: "/terms-of-service",
