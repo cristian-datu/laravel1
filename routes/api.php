@@ -18,12 +18,13 @@ use App\Http\Resources\UserCollection;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/users', function (Request $request) {
-        return new UserCollection(User::paginate(5));
-    });
+Route::namespace('API')->name('api.')->group(function () {
+    // List and search
+    Route::get('/users', 'UsersController@index')->name('users.index');
 
-    Route::get('/user/{id}', function (Request $request, $id) {
-        return new UserResource(User::find($id));
-    });
+    // Update
+    Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
+
+    // Delete
+    Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
 });

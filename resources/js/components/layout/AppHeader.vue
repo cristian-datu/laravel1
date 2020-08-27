@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header class="mb-4">
         <div class="container">
             <ul class="nav">
                 <li class="nav-item">

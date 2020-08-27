@@ -1,16 +1,24 @@
 <template>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-            </tr>
-        </thead>
-        <tbody v-for="user in users" :key="user.id">
-            <UserTableRow v-bind:user="user" />
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+            </thead>
+
+            <transition-group tag="tbody" name="fade">
+                <UserTableRow
+                    v-for="user in users"
+                    :key="user.id"
+                    v-bind:user="user"
+                />
+            </transition-group>
+        </table>
+    </div>
 </template>
 
 <script>

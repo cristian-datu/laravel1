@@ -77,7 +77,7 @@ export default {
         current_page: { type: Number, required: true },
         last_page: { type: Number, required: true },
         from: { type: Number, required: true },
-        to: { type: Number, required: true },
+        to: { type: Number, required: false, default: 1 },
         total: { type: Number, required: true }
         //"pagination-change": { type: Function, required: true }
     }
