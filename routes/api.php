@@ -7,6 +7,8 @@ use App\User;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserCollection;
 
+use App\Http\Controllers\API\TermsOfServiceController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +20,7 @@ use App\Http\Resources\UserCollection;
 |
 */
 
+// Users Routes
 Route::namespace('API')->name('api.')->group(function () {
     // List and search
     Route::get('/users', 'UsersController@index')->name('users.index');
@@ -36,4 +39,28 @@ Route::namespace('API')->name('api.')->group(function () {
 
     // Delete
     Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
+});
+
+// Terms of Service Routes
+Route::namespace('API')->name('api.')->group(function () {
+    // List and search
+    Route::get('/terms-of-service', 'TermsOfServiceController@index')->name('terms-of-service.index');
+
+    // Show single
+    Route::get('/terms-of-service/{termOfService}', 'TermsOfServiceController@show')->name('terms-of-service.show');
+
+    // Create
+    Route::post('/terms-of-service', 'TermsOfServiceController@store')->name('terms-of-service.store');
+
+    // Update
+    Route::patch('/terms-of-service/{termOfService}', 'TermsOfServiceController@update')->name('terms-of-service.update');
+
+    // Delete
+    Route::delete('/terms-of-service/{termOfService}', 'TermsOfServiceController@destroy')->name('terms-of-service.destroy');
+
+    // Publish
+    Route::patch('/terms-of-service/{termOfService}/publish', 'TermsOfServiceController@publish')->name('terms-of-service.publish');
+
+    // Unpublish
+    Route::patch('/terms-of-service/{termOfService}/unpublish', 'TermsOfServiceController@unpublish')->name('terms-of-service.unpublish');
 });
