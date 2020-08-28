@@ -65,7 +65,7 @@ class UsersController extends Controller
 
         if ($User->save()) {
             $rs['data'] = new UserResource($User);
-            // Emmit registration event to send email verification
+            // Emit registration event to send email verification
             event(new \Illuminate\Auth\Events\Registered($User));
         } else {
             $rs['error'] = 'Error saving user';
@@ -123,7 +123,7 @@ class UsersController extends Controller
         unset($data['accept_terms']);
         if ($user->update($data)) {
             if (!$user->email_verified_at) {
-                // Emmit registration event to send email verification
+                // Emit registration event to send email verification
                 event(new \Illuminate\Auth\Events\Registered($user));
             }
             $data['data'] = $user;
