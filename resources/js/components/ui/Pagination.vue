@@ -76,7 +76,7 @@ export default {
         per_page: { type: Number, required: true },
         current_page: { type: Number, required: true },
         last_page: { type: Number, required: true },
-        from: { type: Number, required: true },
+        from: { type: Number, required: false, default: 1 },
         to: { type: Number, required: false, default: 1 },
         total: { type: Number, required: true }
     }

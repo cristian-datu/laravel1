@@ -38,32 +38,66 @@ const app = new Vue({
         routes: [
             {
                 path: "/users",
-                component: () => import("./components/views/Users/Users.vue"),
+                component: () => import("./components/views/Users/Users"),
                 children: [
                     {
                         path: "/",
                         name: "users.index",
                         component: () =>
-                            import("./components/views/Users/UserList.vue")
+                            import("./components/views/Users/UserList")
                     },
                     {
                         path: "create",
                         name: "users.create",
                         component: () =>
-                            import("./components/views/Users/UserCreate.vue")
+                            import("./components/views/Users/UserCreate")
                     },
                     {
                         path: ":id/edit",
                         name: "users.edit",
                         component: () =>
-                            import("./components/views/Users/UserEdit.vue")
+                            import("./components/views/Users/UserEdit")
                     }
                 ]
             },
             {
                 path: "/terms-of-service",
-                name: "TermsOfService",
-                component: () => import("./components/views/TermsOfService.vue")
+                component: () =>
+                    import("./components/views/TermsOfService/TermsOfService"),
+                children: [
+                    {
+                        path: "/",
+                        name: "tos.index",
+                        component: () =>
+                            import(
+                                "./components/views/TermsOfService/TermsOfServiceList"
+                            )
+                    },
+                    {
+                        path: "create",
+                        name: "tos.create",
+                        component: () =>
+                            import(
+                                "./components/views/TermsOfService/TermsOfServiceCreate"
+                            )
+                    },
+                    {
+                        path: ":id/edit",
+                        name: "tos.edit",
+                        component: () =>
+                            import(
+                                "./components/views/TermsOfService/TermsOfServiceEdit"
+                            )
+                    },
+                    {
+                        path: "/:id",
+                        name: "tos.show",
+                        component: () =>
+                            import(
+                                "./components/views/TermsOfService/TermsOfServiceDetails"
+                            )
+                    }
+                ]
             }
         ]
     }),

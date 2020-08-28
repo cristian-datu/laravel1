@@ -1,5 +1,5 @@
 <template>
-    <div>TermsOfService</div>
+    <router-view></router-view>
 </template>
 
 <script>

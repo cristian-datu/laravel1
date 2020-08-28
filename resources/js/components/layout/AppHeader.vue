@@ -12,7 +12,7 @@
                 </li>
                 <li class="nav-item">
                     <router-link
-                        :to="{ name: 'TermsOfService' }"
+                        :to="{ name: 'tos.index' }"
                         active-class="active"
                         class="nav-link"
                         >Terms of Service</router-link
