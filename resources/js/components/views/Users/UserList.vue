@@ -133,7 +133,7 @@ export default {
                 confirm(`Are you sure you want to unverify user ${user.email}?`)
             ) {
                 axios
-                    .patch(`/api/users/${user.id}?unverify=1`, user)
+                    .patch(`/api/users/${user.id}/unverify`, user)
                     .then(response => {
                         if (response.error) {
                             alert(`Error unverifying user ${user.email}`);

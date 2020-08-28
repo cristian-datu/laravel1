@@ -102,41 +102,57 @@ class UsersController extends Controller
             'error' => null
         ];
 
-        $unverify = $request->get('unverify', false);
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/', 'confirmed'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'accept_terms' => ['required']
+        ]);
 
-        if ($unverify) {
-            // Email verification cancellation
-            $data['unverify'] = $unverify;
-            $user->email_verified_at = null;
-            if ($user->save()) {
-                $data['data'] = new UserResource($user);
-            } else {
-                $data['error'] = 'Error unregister user';
-            }
+        if ($data['email'] !== $user->email) {
+            $data['email_verified_at'] = null;
         } else {
-            // Update user data
-            $data = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255'],
-                'password' => ['required', 'string', 'min:8', 'regex:/^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/', 'confirmed'],
-                'phone' => ['nullable', 'string', 'max:255'],
-                'accept_terms' => ['required']
-            ]);
-            if ($data['email'] !== $user->email) {
-                $data['email_verified_at'] = null;
-            } else {
-                unset($data['email']);
+            // No need to update email field
+            unset($data['email']);
+        }
+
+        $data['password'] = Hash::make($data['password']);
+        $data['terms_accepted_at'] = ($data['accept_terms'] ? now() : null);
+
+        unset($data['accept_terms']);
+        if ($user->update($data)) {
+            if (!$user->email_verified_at) {
+                // Emmit registration event to send email verification
+                event(new \Illuminate\Auth\Events\Registered($user));
             }
-            $data['password'] = Hash::make($data['password']);
-            $data['terms_accepted_at'] = ($data['accept_terms'] ? now() : null);
-            unset($data['accept_terms']);
-            if ($user->update($data)) {
-                if (!$user->email_verified_at) {
-                    // Emmit registration event to send email verification
-                    event(new \Illuminate\Auth\Events\Registered($user));
-                }
-                $data['data'] = $user;
-            }
+            $data['data'] = $user;
+        }
+
+
+        return $data;
+    }
+
+    /**
+     * Email verification cancellation.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function unverify(Request $request, User $user)
+    {
+        $data = [
+            'data' => new UserResource($user),
+            'error' => null
+        ];
+
+        $user->email_verified_at = null;
+
+        if ($user->save()) {
+            $data['data'] = new UserResource($user);
+        } else {
+            $data['error'] = 'Error unregister user';
         }
 
         return $data;

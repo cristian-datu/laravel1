@@ -28,6 +28,9 @@ Route::namespace('API')->name('api.')->group(function () {
     // Create
     Route::post('/users', 'UsersController@store')->name('users.store');
 
+    // Email verification cancellation
+    Route::patch('/users/{user}/unverify', 'UsersController@unverify')->name('users.unverify');
+
     // Update
     Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
 
