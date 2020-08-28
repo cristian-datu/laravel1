@@ -46,7 +46,7 @@
                     v-bind:class="{ disabled: current_page === last_page }"
                     class="page-link"
                     href="#"
-                    title="Next"
+                    title="Next Page"
                 >
                     <span aria-hidden="true">&rarr;</span>
                     <span class="sr-only">Next Page</span>
@@ -59,7 +59,7 @@
                     v-bind:class="{ disabled: current_page === last_page }"
                     class="page-link"
                     href="#"
-                    title="Last"
+                    title="Last Page"
                 >
                     <span aria-hidden="true">&rArr;</span>
                     <span class="sr-only">Last Page</span>
@@ -79,7 +79,6 @@ export default {
         from: { type: Number, required: true },
         to: { type: Number, required: false, default: 1 },
         total: { type: Number, required: true }
-        //"pagination-change": { type: Function, required: true }
     }
 };
 </script>
