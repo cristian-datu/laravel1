@@ -38,26 +38,25 @@ const app = new Vue({
         routes: [
             {
                 path: "/users",
-                name: "UserList",
-                component: () => import("./components/views/Users.vue"),
+                component: () => import("./components/views/Users/Users.vue"),
                 children: [
                     {
                         path: "/",
                         name: "users.index",
                         component: () =>
-                            import("./components/views/UserList.vue")
+                            import("./components/views/Users/UserList.vue")
                     },
                     {
                         path: "create",
                         name: "users.create",
                         component: () =>
-                            import("./components/views/UserCreate.vue")
+                            import("./components/views/Users/UserCreate.vue")
                     },
                     {
                         path: ":id/edit",
                         name: "users.edit",
                         component: () =>
-                            import("./components/views/UserEdit.vue")
+                            import("./components/views/Users/UserEdit.vue")
                     }
                 ]
             },
