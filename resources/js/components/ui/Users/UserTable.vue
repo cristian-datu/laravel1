@@ -27,7 +27,8 @@ import UserTableRow from "./UserTableRow";
 export default {
     name: "UserTable",
     props: {
-        users: Array
+        users: Array,
+        required: true
     },
     components: {
         UserTableRow

@@ -333,7 +333,7 @@ export default {
                     .then(response => {
                         const { data, error } = response.data;
                         if (error) {
-                            alert("Error saving user");
+                            alert(error);
                         } else {
                             alert(`User ${data.email} updated`);
                             this.$router.push({ name: "users.index" });

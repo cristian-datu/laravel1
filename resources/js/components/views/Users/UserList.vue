@@ -63,7 +63,6 @@ export default {
 
     methods: {
         loadUsers(page, term) {
-            const update = data => {};
             this.isLoading = true;
             term = term ?? "";
 
