@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\TermOfService;
 use App\Http\Resources\TermsOfService as TermsOfServiceResource;
+use App\Events\TermsOfServicePublished;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +76,11 @@ class TermsOfServiceController extends Controller
 
         if ($termOfService->save()) {
             $json['data'] = new TermsOfServiceResource($termOfService);
+
+            // Dispatch publish event
+            if ($termOfService->published_at) {
+                TermsOfServicePublished::dispatch($termOfService);
+            }
         } else {
             $json['error'] = 'Error updating Terms of Service';
         }
@@ -116,6 +122,11 @@ class TermsOfServiceController extends Controller
             $data = $this->validateRequest($request);
             if ($termOfService->update($data)) {
                 $json['data'] = new TermsOfServiceResource($termOfService);
+
+                // Dispatch publish event
+                if ($termOfService->published_at) {
+                    TermsOfServicePublished::dispatch($termOfService);
+                }
             } else {
                 $json['error'] = 'Error updating Terms of Service';
             }
@@ -166,6 +177,11 @@ class TermsOfServiceController extends Controller
 
             if ($termOfService->save()) {
                 $data['data'] = new TermsOfServiceResource($termOfService);
+
+                // Dispatch publish event
+                if ($termOfService->published_at) {
+                    TermsOfServicePublished::dispatch($termOfService);
+                }
             } else {
                 $data['error'] = 'Error publishing Terms of Service';
             }
