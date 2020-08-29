@@ -31,6 +31,9 @@ Route::namespace('API')->name('api.')->group(function () {
     // Create
     Route::post('/users', 'UsersController@store')->name('users.store');
 
+    // Accept latest Terms of Service
+    Route::patch('/users/{user}/accept', 'UsersController@acceptTerms')->name('users.accept');
+
     // Email verification cancellation
     Route::patch('/users/{user}/unverify', 'UsersController@unverify')->name('users.unverify');
 
@@ -43,6 +46,16 @@ Route::namespace('API')->name('api.')->group(function () {
 
 // Terms of Service Routes
 Route::namespace('API')->name('api.')->group(function () {
+
+    // Show latest published terms
+    Route::get('/terms-of-service/latest', 'TermsOfServiceController@latestPublished')->name('terms-of-service.latest');
+
+    // Show all accepted terms
+    Route::get('/terms-of-service/accepted', 'TermsOfServiceController@accepted')->name('terms-of-service.accepted');
+
+    // Query for unaccepted terms
+    Route::get('/terms-of-service/unaccepted', 'TermsOfServiceController@unaccepted')->name('terms-of-service.unaccepted');
+
     // List and search
     Route::get('/terms-of-service', 'TermsOfServiceController@index')->name('terms-of-service.index');
 
