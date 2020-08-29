@@ -136,6 +136,29 @@ class UsersController extends Controller
     /**
      * Email verification cancellation.
      *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptTerms(User $user)
+    {
+        $jsonData = [
+            'data' => null,
+            'error' => null
+        ];
+
+        $user->terms_accepted_at = now();
+        if ($user->save()) {
+            $jsonData['data'] = "accepted";
+        } else {
+            $jsonData['error'] = 'Error saving user';
+        }
+
+        return response()->json($jsonData);
+    }
+
+    /**
+     * Email verification cancellation.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response

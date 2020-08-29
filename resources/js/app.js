@@ -98,6 +98,24 @@ const app = new Vue({
                             )
                     }
                 ]
+            },
+
+            {
+                path: "/",
+                name: "latest-terms",
+                component: () =>
+                    import(
+                        "./components/views/TermsOfService/TermsOfServiceLatest"
+                    )
+            },
+
+            {
+                path: "/",
+                name: "accepted-terms",
+                component: () =>
+                    import(
+                        "./components/views/TermsOfService/TermsOfServiceAccepted"
+                    )
             }
         ]
     }),

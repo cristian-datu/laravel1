@@ -221,4 +221,76 @@ class TermsOfServiceController extends Controller
 
         return response()->json($data);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function latestPublished()
+    {
+        $termOfService = TermOfService::whereNotNull('published_at')
+            ->orderBy('published_at', 'DESC')
+            ->limit(1)
+            ->first();
+
+        return response()->json([
+            'data' => new TermsOfServiceResource($termOfService),
+            'error' => null
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function accepted()
+    {
+        $jsonData = [
+            'data' => null,
+            'error' => null
+        ];
+        $date = auth()->user()->terms_accepted_at;
+        if ($date) {
+            $acceptedTerms = TermOfService::whereNotNull('published_at')
+                ->where('published_at', '<=', $date)
+                ->orderBy('published_at', 'DESC')
+                ->limit(1)
+                ->first();
+            if ($acceptedTerms->count() > 0) {
+                $jsonData['data'] = new TermsOfServiceResource($acceptedTerms);
+            } else {
+                $jsonData['error'] = 'Accepted Terms of Service not found';
+            }
+        }
+        return response()->json($jsonData);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function unaccepted()
+    {
+        $user = auth()->user();
+        $jsonData = [
+            'data' => "no",
+            'userId' => $user->id,
+            'error' => null
+        ];
+        $date = $user->terms_accepted_at;
+        if ($date) {
+            $count = TermOfService::whereNotNull('published_at')
+                ->where('published_at', '>', $date)
+                ->count();
+            if ($count > 0) {
+                $jsonData['data'] = "yes";
+            } else {
+                $jsonData['error'] = 'Error checking for unaccepted terms';
+            }
+        }
+        return response()->json($jsonData);
+    }
 }
