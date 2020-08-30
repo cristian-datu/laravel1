@@ -254,7 +254,7 @@
                                         type="submit"
                                         class="btn btn-primary"
                                     >
-                                        Register
+                                        Save
                                     </button>
                                 </div>
                             </div>
