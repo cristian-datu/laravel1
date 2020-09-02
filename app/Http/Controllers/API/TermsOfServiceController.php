@@ -29,12 +29,25 @@ class TermsOfServiceController extends Controller
      */
     public function validateRequest(Request $request)
     {
-        return
-            $request->validate([
-                'title' => ['required', 'string', 'min:1', 'max:255'],
-                'content' => ['string', 'max:4095'],
-                'published_at' => ['nullable', 'string']
-            ]);
+        $input = $request->validate([
+            'title' => ['required', 'string', 'min:1', 'max:255'],
+            'content' => ['string', 'max:4095'],
+            'published_at' => ['nullable', 'string']
+        ]);
+
+        $allowedTags = '<' . implode('><', [
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'p', 'span', 'strong', 'em', 'blockquote', 'q', 'a', 'b', 'i',
+            'small', 'sub', 'sup',
+            'dl', 'dt', 'dd',
+            'ol', 'ul', 'li',
+            'table', 'thead', 'tbody', 'tfoot', 'caption', 'col', 'colgroup', 'tr', 'th', 'td'
+        ]) . '>';
+
+        $input['title'] = strip_tags($input['title']);
+        $input['content'] = strip_tags($input['content'], $allowedTags);
+
+        return $input;
     }
 
     /**
