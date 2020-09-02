@@ -8,6 +8,7 @@ use App\Http\Resources\User as UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
@@ -104,7 +105,7 @@ class UsersController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => ['required', Rule::unique('users')->ignore($user->id), 'max:255'],
             'password' => ['required', 'string', 'min:8', 'regex:/^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$/', 'confirmed'],
             'phone' => ['nullable', 'string', 'max:255'],
             'accept_terms' => ['required']
