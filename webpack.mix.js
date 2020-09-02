@@ -11,5 +11,8 @@ const mix = require("laravel-mix");
  |
  */
 
+mix.browserSync("http://localhost:8000");
+mix.disableNotifications();
+
 mix.js("resources/js/app.js", "public/js").sourceMaps();
 mix.sass("resources/sass/app.scss", "public/css").sourceMaps();
